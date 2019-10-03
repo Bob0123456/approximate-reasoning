@@ -1,4 +1,4 @@
-# Belief Approximate Reasoning Q2 of CPSC 422 A2
+# Bayesian Networks and Approximate Reasoning Exercise
 ## To set up:
 - Install python if you don't have it: `brew install python`
 - Install click, a python library to help make a CLI: `pip3 install matplotlib`
