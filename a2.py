@@ -34,20 +34,41 @@ def run_rejection_sampling():
                     num_r += 1
 
                 if num_accepted_samples > 0:    # guard against division by 0
-                    p_r_given_s_w = num_r / num_accepted_samples
+                    p_r_given_s_w = num_r / num_samples
                     x.append(num_samples)
                     y.append(p_r_given_s_w)
-
+    
+    print(num_accepted_samples)
     plot(x, y, 'Rejection Sampling')
     sys.exit()
 
 # TODO: part 2 of Q2 A2
 def run_likelihood_weighting():
-    print("TODO")
+    x = []
+    y = []
+    num_samples = 0
+    weighted_t = 0
+    total_weight = 0
+
+    with open('lw_1.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            num_samples += 1
+            total_weight += float(row[1])
+
+            if row[0] == R_EQUALS_T_SAMPLE:
+                weighted_t += float(row[1])
+                p_r_given_s_w = weighted_t / total_weight
+                x.append(num_samples)
+                y.append(p_r_given_s_w)
+    
+    print(num_samples)
+    plot(x, y, 'Likelihood Weighting')
+    sys.exit()  
 
 # Plots the given x, y into a graph
 def plot(x, y, title):
-    plt.plot(x,y, label='P(r|s,w)')
+    plt.semilogx(x,y, label='P(r|s,w)')
     plt.xlabel('Number of samples')
     plt.ylabel('P(r|s,w)')
     plt.title(title)
