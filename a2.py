@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import csv
 import sys
+import math
 
 REJECTED_SAMPLE = '-1'
 R_EQUALS_T_SAMPLE = '1'
@@ -19,6 +20,7 @@ def run():
 def run_rejection_sampling():
     x = []
     y = []
+    yerr = []
     num_samples = 0
     num_accepted_samples = 0
     num_r = 0
@@ -37,10 +39,13 @@ def run_rejection_sampling():
                     p_r_given_s_w = num_r / num_accepted_samples
                     x.append(num_samples)
                     y.append(p_r_given_s_w)
+                    error = math.sqrt(math.log(0.025) / (-2 * num_accepted_samples));
+                    yerr.append(error)
 
-    plot(x, y, 'Rejection Sampling')
+    plot_with_yerr(x, y, yerr, 'Rejection Sampling')
     sys.exit()
 
+# Parse lw_1.csv and plot p(r|s,w) across samples using likelihood weighting
 def run_likelihood_weighting():
     x = []
     y = []
@@ -63,6 +68,17 @@ def run_likelihood_weighting():
 # Plots the given x, y into a graph
 def plot(x, y, title):
     plt.semilogx(x,y, label='P(r|s,w)')
+    plt.xlabel('Number of samples')
+    plt.ylabel('P(r|s,w)')
+    plt.title(title)
+    plt.legend()
+    plt.show()
+
+# Plots the given x, y and yerr into a graph
+def plot_with_yerr(x, y, yerr, title):
+    ax = plt.axes()
+    ax.set_xscale("log")
+    plt.errorbar(x, y, yerr, label='P(r|s,w)')
     plt.xlabel('Number of samples')
     plt.ylabel('P(r|s,w)')
     plt.title(title)
